@@ -79,7 +79,8 @@ Router.post("/login", async (req, res) => {
             logoUrl: user.logoUrl,
             subscribers: user.subscribers,
             subscribedChannels: user.subscribedChannels,
-            token: token
+            token: token,
+            userId:user._id
         });
 
 
