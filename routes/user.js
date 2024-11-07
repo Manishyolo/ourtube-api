@@ -59,15 +59,15 @@ Router.post("/login", async (req, res) => {
 
     try {
         const { email, password } = req.body;
-        console.log(password)
+        console.log(`user password through frontend ${password}`)
         const user = await userModel.findOne({ email: email });
-        console.log(user);
+        console.log(`user infor from database ${user}`);
         if (!user) {
             return res.status(400).json({ message: "user not found" });
         }
 
         const ispasswordvalid = await bcrypt.compare(password, user.password);
-        console.log(ispasswordvalid);
+        console.log(`result of decrypting password ${ispasswordvalid}`);
         if (!ispasswordvalid) {
             return res.status(500).json({ message: "invalid password" });
         }
