@@ -30,7 +30,7 @@ Router.post("/signup", async (req, res) => {
         }
 
         // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 6);
 
         // Upload image to Cloudinary
         const uploadedImage = await cloudinary.uploader.upload(logoUrl.tempFilePath);
