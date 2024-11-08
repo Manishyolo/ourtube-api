@@ -66,7 +66,15 @@ Router.post("/login", async (req, res) => {
             return res.status(400).json({ message: "user not found" });
         }
 
-        const ispasswordvalid = await bcrypt.compare(password, user.password);
+        const ispasswordvalid = await bcrypt.compare(password, user.password,function(err,result){
+            if(err){
+                console.log(err);
+            }else{
+              
+                console.log(`password validating result ${result}`)
+            }
+                  
+        });
         console.log(`result of decrypting password ${ispasswordvalid}`);
         if (!ispasswordvalid) {
             return res.status(500).json({ message: "invalid password" });
