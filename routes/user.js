@@ -1,6 +1,6 @@
 const express = require('express');
 const Router = express.Router();
-const bcrypt = require('bcrypt');
+const argon2 = require('argon2');
 const JWT = require('jsonwebtoken');
 const cloudinary = require("cloudinary").v2;
 const dotenv = require('dotenv');
@@ -30,7 +30,7 @@ Router.post("/signup", async (req, res) => {
         }
 
         // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 6);
+        const hashedPassword = await argon2.hash(password);
 
         // Upload image to Cloudinary
         const uploadedImage = await cloudinary.uploader.upload(logoUrl.tempFilePath);
@@ -66,15 +66,7 @@ Router.post("/login", async (req, res) => {
             return res.status(400).json({ message: "user not found" });
         }
 
-        const ispasswordvalid = await bcrypt.compare(password, user.password,function(err,result){
-            if(err){
-                console.log(err);
-            }else{
-              
-                console.log(`password validating result ${result}`)
-            }
-                  
-        });
+        const ispasswordvalid = await argon2.verify(user.password, password);
         console.log(`result of decrypting password ${ispasswordvalid}`);
         if (!ispasswordvalid) {
             return res.status(500).json({ message: "invalid password" });
